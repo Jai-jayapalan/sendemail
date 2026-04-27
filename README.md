@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📬 FileFlow | Professional File Sender
 
-## Getting Started
+A sleek, high-performance Next.js application designed to streamline file sharing via email. Featuring a modern drag-and-drop interface, real-time validation, and automated email dispatching.
 
-First, run the development server:
+## ✨ Key Features
 
+* **Modern UI/UX**: Built with a "Mobile-First" approach using **Tailwind CSS v4** for a clean, high-contrast aesthetic.
+* **Intelligent Dropzone**: Advanced file upload area with drag-and-drop support, file type icons, and size validation.
+* **Real-time Validation**: Dynamic form handling that prevents submission until a valid email and at least one file are present.
+* **Smooth Feedback**: Integrated **React-Toastify** for success/error notifications and a custom pulse-ring loader for network states.
+* **Robust Backend**: Powered by Next.js App Router and **Nodemailer** for reliable SMTP delivery.
+* **CI/CD Ready**: Pre-configured GitHub Actions pipeline for automated deployment to Vercel.
+
+---
+
+## 🛠️ Tech Stack
+
+* **Framework**: [Next.js 15 (App Router)](https://nextjs.org/)
+* **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+* **Icons**: [React Icons (Feather)](https://react-icons.github.io/react-icons/)
+* **Mailing**: [Nodemailer](https://nodemailer.com/)
+* **Pipeline**: GitHub Actions & Vercel CLI
+
+---
+
+## 🚀 Getting Started
+
+### 1. Prerequisites
+* Node.js 20.x or 24.x
+* A Gmail account (or SMTP provider)
+
+### 2. Installation
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone the repository
+git clone https://github.com/your-username/fileflow.git
+
+# Navigate to the directory
+cd fileflow
+
+# Install dependencies
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Environment Setup
+Create a `.env.local` file in the root directory and add your SMTP credentials:
+```env
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASS=your-app-specific-password
+```
+> **Note**: For Gmail, you must generate an **App Password** in your Google Account security settings.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. Running Locally
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) to see the application.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## ☁️ Deployment
 
-To learn more about Next.js, take a look at the following resources:
+### Vercel (Manual)
+The easiest way to deploy is to link your GitHub repository to Vercel. Ensure you add `EMAIL_USER` and `EMAIL_PASS` to the **Environment Variables** in the Vercel Dashboard.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### CI/CD (Automated)
+This project includes a `.github/workflows/deploy.yml` file. To enable automated deployments:
+1.  Go to GitHub **Settings > Secrets and variables > Actions**.
+2.  Add the following secrets:
+    * `VERCEL_TOKEN`: Your Vercel Personal Access Token.
+    * `VERCEL_ORG_ID`: Found in `.vercel/project.json`.
+    * `VERCEL_PROJECT_ID`: Found in `.vercel/project.json`.
+    * `EMAIL_USER` & `EMAIL_PASS`: Your SMTP credentials.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📂 Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```text
+├── app/
+│   ├── api/send-email/  # API Route (Multipart FormData handling)
+│   ├── components/      # UI Components (FileUpload, EmailForm, Loader)
+│   ├── globals.css      # Tailwind v4 configuration & custom animations
+│   └── page.tsx         # Main application entry point
+├── lib/
+│   └── mailer.js        # Nodemailer transport configuration
+└── public/              # Static assets
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 📄 License
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+*Developed with 💙 by jai*
