@@ -6,38 +6,39 @@ on:
   pull_request:
     branches: [main]
 
+# Set global environment variables to ensure Node 24 is used
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4 # Note: Checkout v4 supports Node 20/24
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24' # Updated to Node 24
           cache: 'npm'
 
       - name: Install Dependencies
         run: npm install
 
       - name: Lint and Type Check
-        run: |
-          npm run lint
-          # Add npm run type-check if you have a custom script
+        run: npm run lint
 
       - name: Build Project
         run: npm run build
         env:
-          # Pass dummy vars for build if your code requires them at build-time
           EMAIL_USER: ${{ secrets.EMAIL_USER }}
           EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
 
       - name: Deploy to Vercel
         if: github.ref == 'refs/heads/main'
-        uses: amondnet/vercel-action@v20
+        uses: amondnet/vercel-action@v20 # Maintain v20 but force Node24 via env
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
