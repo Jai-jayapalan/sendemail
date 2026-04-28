@@ -10,7 +10,7 @@ export default function FileUpload({ files, setFiles }) {
     const handleChange = (e) => {
         const newFiles = Array.from(e.target.files);
         if (newFiles.length > 0) {
-            setFiles(prev => [...prev, ...newFiles]);
+            setFiles(prev => [...prev, ...newFiles])
         }
     };
 
