@@ -8,8 +8,14 @@ export default function EmailForm({ files, setFiles }) {
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
 
+    // Inside EmailForm.jsx
+    const TOTAL_LIMIT = 10 * 1024 * 1024; // 10MB
+    const totalSize = useMemo(() => files.reduce((acc, f) => acc + f.size, 0), [files]);
+
     const isEmailValid = useMemo(() => /\S+@\S+\.\S+/.test(email), [email]);
-    const canSend = isEmailValid && files.length > 0 && !loading;
+
+    // Add totalSize check to canSend
+    const canSend = isEmailValid && files.length > 0 && totalSize <= TOTAL_LIMIT && !loading;
 
     const handleSubmit = async () => {
         if (!canSend) return;
@@ -27,7 +33,7 @@ export default function EmailForm({ files, setFiles }) {
                 toast.success("Files sent successfully!");
                 // FIX: Clear both email and files on success
                 setEmail("");
-                setFiles([]); 
+                setFiles([]);
             } else {
                 toast.error("Failed to send email");
             }

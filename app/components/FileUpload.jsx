@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef } from "react";
 import { FiUploadCloud, FiFile, FiX } from "react-icons/fi";
+import SizeValidation from "./SizeValidation";
 
 export default function FileUpload({ files, setFiles }) {
     const [isDragging, setIsDragging] = useState(false);
@@ -58,12 +59,15 @@ export default function FileUpload({ files, setFiles }) {
                                 onClick={() => removeFile(index)}
                                 className="text-slate-400 hover:text-red-500 p-1"
                             >
-                                <FiX size={16} />
+                                <FiX className="cursor-pointer" size={16} />
                             </button>
                         </div>
                     ))}
                 </div>
             )}
+            
+            {/* Real-time Validation Component */}
+            <SizeValidation files={files} limitMB={10} />
         </div>
     );
 }

@@ -11,20 +11,31 @@ export async function POST(req) {
   try {
     const data = await req.formData();
     const email = data.get("email");
-    const files = data.getAll("files"); // Gets all uploaded files
+    const files = data.getAll("files");
 
-    if (!email) return NextResponse.json({ error: "No email" }, { status: 400 });
+    if (!email) {
+      return NextResponse.json({ error: "Invalid email" }, { status: 400 });
+    }
 
-    // Convert files to buffers for Nodemailer
-    const attachments = await Promise.all(files.map(async (file) => ({
-      filename: file.name,
-      content: Buffer.from(await file.arrayBuffer()),
-    })));
+    const fileArray = await Promise.all(
+      files.map(async (file) => {
+        const buffer = Buffer.from(await file.arrayBuffer());
+        return {
+          originalFilename: file.name, // "document.pdf"
+          buffer: buffer,
+          mimetype: file.type,         // "application/pdf"
+        };
+      })
+    );
 
-    await sendMail({ to: email, attachments });
+    await sendMail({
+      to: email,
+      files: fileArray,
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("Mail Error:", error);
+    return NextResponse.json({ error: "Failed to send" }, { status: 500 });
   }
 }
